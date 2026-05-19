@@ -1,2 +1,2 @@
 # mern-e-commerce
-MERN stack E-Commerce
+MERN stack E-Commerce Application
