@@ -1,0 +1,27 @@
+{
+  "name": "mern-fullstack",
+  "version": "1.0.0",
+  "description": "Swap Ecommerce Store Fullstack - MERN",
+  "homepage": "https://github.com/menkar/mern-e-commerce#readme",
+  "bugs": {
+    "url": "https://github.com/menkar/mern-e-commerce/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/menkar/mern-e-commerce.git"
+  },
+  "license": "ISC",
+  "author": "Swapnil Menkar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:server": "cd backend && npm run dev",
+    "dev:client": "cd frontend && npm start",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

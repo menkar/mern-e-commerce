@@ -3,12 +3,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const {sendEmail} = require('../utils/sendEmail');
 
-const generateToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET, { expiresIn: '7d'});
+const generateToken = (user) => {
+    return jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, { expiresIn: '7d'});
 }
 
 const registerUser = async (req, res) => {
-    const {name, email, password} = req.body;
+    const {name, email, password, role} = req.body;
     
     try {
         const existingUser = await User.findOne({email});
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = await User.create({name, email, password: hashedPassword});
+        const user = await User.create({name, email, password: hashedPassword, role});
         if (user) {
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -33,7 +33,7 @@ const registerUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user._id),
+                token: generateToken(user),
                 message: 'User registered successful. Please check your email for otp'})
         } else {
             res.status(400).json({message: 'Invalid user data'});
@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user._id),
+                token: generateToken(user),
                 message: "logged in successfully"
             })
         } else {
