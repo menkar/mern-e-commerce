@@ -1,0 +1,10 @@
+/* App shell: keeps footer at bottom when content is short */
+.footer {
+  margin-top: auto;
+}
+
+/* Main content pages share horizontal rhythm */
+.home {
+  flex: 1;
+  width: 100%;
+}
