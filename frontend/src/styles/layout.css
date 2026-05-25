@@ -1,10 +1,41 @@
-/* App shell: keeps footer at bottom when content is short */
-.footer {
-  margin-top: auto;
+/* App shell — full viewport width */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-/* Main content pages share horizontal rhythm */
-.home {
-  flex: 1;
+.footer {
+  margin-top: auto;
   width: 100%;
+}
+
+.footer > div:last-child {
+  width: 100%;
+  text-align: center;
+  padding: var(--space-md) var(--page-gutter);
+  font-size: var(--font-size-xs);
+  color: rgba(248, 250, 252, 0.6);
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer > div:last-child p {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: rgba(248, 250, 252, 0.65);
+}
+
+.footer-content h3 {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-inverse);
+}
+
+.footer-content idv,
+.footer-content > div:first-child {
+  max-width: 320px;
 }

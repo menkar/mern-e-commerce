@@ -1,66 +1,148 @@
-.home {
+/* Home — full-width banner + product grid */
+.home-container {
+  flex: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: calc(100vh - var(--header-height) - 140px);
-  padding: var(--space-3xl) clamp(var(--space-md), 5vw, var(--space-2xl));
-  background: linear-gradient(
-      180deg,
-      var(--color-bg) 0%,
-      var(--color-surface) 45%,
-      var(--color-bg) 100%
-    ),
-    radial-gradient(
-      ellipse 80% 60% at 50% 0%,
-      var(--color-accent-soft) 0%,
-      transparent 70%
-    );
 }
 
-.home h1 {
-  max-width: 18ch;
-  margin-bottom: var(--space-lg);
-  font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-4xl));
+.home-banner {
+  width: 100%;
+  margin: 0;
+  padding: clamp(3rem, 8vw, 5.5rem) var(--page-gutter);
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 40%,
+    var(--color-hero-end) 100%
+  );
+  border-radius: 0;
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 120%,
+    rgba(13, 148, 136, 0.25) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.home-banner h1,
+.home-banner p {
+  position: relative;
+  z-index: 1;
+}
+
+.home-banner h1 {
+  margin: 0 0 var(--space-md);
+  font-size: clamp(var(--font-size-2xl), 4.5vw, var(--font-size-4xl));
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: var(--color-heading);
+  color: var(--color-text-inverse);
   line-height: var(--line-height-tight);
 }
 
-.home p {
-  max-width: 52ch;
-  margin: 0 auto var(--space-2xl);
-  font-size: clamp(var(--font-size-base), 2.5vw, var(--font-size-lg));
+.home-banner p {
+  margin: 0 auto;
+  max-width: 48ch;
+  font-size: clamp(var(--font-size-base), 2vw, var(--font-size-xl));
   line-height: var(--line-height-relaxed);
-  color: var(--color-text-muted);
+  color: rgba(248, 250, 252, 0.9);
 }
 
-.home .btn {
-  margin-top: var(--space-sm);
+.home-container > h2 {
+  width: 100%;
+  margin: 0;
+  padding: var(--section-gap) var(--page-gutter) var(--space-lg);
+  font-size: clamp(var(--font-size-xl), 2.5vw, var(--font-size-2xl));
+  font-weight: 700;
+  color: var(--color-heading);
+  text-align: center;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.home-container > h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin: var(--space-sm) auto 0;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.product-grid {
+  width: 100%;
+  margin: 0;
+  padding: var(--space-lg) var(--page-gutter) var(--section-gap);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--product-card-min), 1fr));
+  gap: var(--product-grid-gap);
+  align-items: stretch;
+  justify-items: center;
+  background: var(--color-bg);
+}
+
+.home-container .loading-message {
+  width: 100%;
+  min-height: 280px;
+  background: var(--color-bg);
 }
 
 @media (max-width: 768px) {
-  .home {
-    min-height: calc(100vh - 180px);
-    padding-top: var(--space-2xl);
-    padding-bottom: var(--space-2xl);
+  .home-banner {
+    padding-top: clamp(2.5rem, 10vw, 3.5rem);
+    padding-bottom: clamp(2.5rem, 10vw, 3.5rem);
   }
 
-  .home h1 {
-    max-width: none;
+  .home-container > h2 {
+    padding-top: var(--space-2xl);
+    text-align: left;
+  }
+
+  .home-container > h2::after {
+    margin-left: 0;
+    margin-right: auto;
   }
 }
 
 @media (max-width: 480px) {
-  .home {
-    min-height: auto;
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-xl);
+  .product-grid {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-2xl);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
   }
+}
 
-  .home p {
-    margin-bottom: var(--space-xl);
+@media (min-width: 481px) and (max-width: 767px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 240px));
+    justify-content: center;
   }
 }

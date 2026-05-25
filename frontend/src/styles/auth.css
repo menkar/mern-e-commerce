@@ -1,0 +1,104 @@
+/* Login & register */
+.auth-container,
+.register {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - var(--header-height) - 200px);
+  padding: var(--space-2xl) var(--page-gutter);
+  background: var(--color-bg);
+}
+
+.auth-form,
+.register form {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-2xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-form h2,
+.register form h2 {
+  margin: 0 0 var(--space-xl);
+  text-align: center;
+  font-size: var(--font-size-2xl);
+  color: var(--color-heading);
+}
+
+.auth-form input,
+.register form input {
+  width: 100%;
+  margin-bottom: var(--space-md);
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.auth-form input:focus,
+.register form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.auth-form .btn,
+.register form button[type="submit"] {
+  width: 100%;
+  margin-top: var(--space-sm);
+  padding: 0.875rem;
+}
+
+.register form button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-inverse);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    var(--color-accent-hover) 100%
+  );
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-base);
+}
+
+.register form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-form p,
+.register form p {
+  margin: var(--space-lg) 0 0;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.auth-form p a,
+.register form p a {
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .auth-form,
+  .register form {
+    padding: var(--space-xl);
+  }
+}

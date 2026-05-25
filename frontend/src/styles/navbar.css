@@ -7,8 +7,9 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-md);
+  width: 100%;
   min-height: var(--header-height);
-  padding: var(--space-md) clamp(var(--space-md), 4vw, var(--space-2xl));
+  padding: var(--space-md) var(--page-gutter);
   background: var(--color-primary);
   color: var(--color-text-inverse);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -19,7 +20,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-md);
-  font-size: var(--font-size-lg);
+  font-size: clamp(var(--font-size-base), 2vw, var(--font-size-lg));
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text-inverse);
@@ -35,6 +36,7 @@
 .navbar-logo {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   object-fit: contain;
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -45,7 +47,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-sm) var(--space-xl);
+  justify-content: flex-end;
+  gap: var(--space-sm) clamp(var(--space-md), 3vw, var(--space-xl));
 }
 
 .navbar-links li a {
@@ -67,7 +70,7 @@
   bottom: 0;
   width: 100%;
   height: 2px;
-  background: var(--color-accent);
+  background: var(--color-accent-light);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--transition-base);
@@ -87,6 +90,29 @@
   border-radius: var(--radius-sm);
 }
 
+.btn-logout {
+  padding: var(--space-sm) var(--space-md);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-inverse);
+  background: transparent;
+  border: 1px solid rgba(248, 250, 252, 0.35);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn-logout:hover {
+  background: rgba(248, 250, 252, 0.1);
+  border-color: rgba(248, 250, 252, 0.6);
+}
+
+.btn-logout:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -99,12 +125,10 @@
 
   .navbar-brand a {
     justify-content: center;
-    font-size: var(--font-size-base);
   }
 
   .navbar-links {
     justify-content: center;
-    gap: var(--space-md) var(--space-lg);
   }
 }
 

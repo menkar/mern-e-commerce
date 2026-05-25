@@ -2,12 +2,15 @@
   /* Brand & surfaces */
   --color-primary: #0f172a;
   --color-primary-light: #1e293b;
+  --color-primary-mid: #1a2332;
   --color-accent: #0d9488;
   --color-accent-hover: #0f766e;
+  --color-accent-light: #14b8a6;
   --color-accent-soft: rgba(13, 148, 136, 0.12);
   --color-surface: #ffffff;
-  --color-bg: #f1f5f9;
+  --color-bg: #eef2f6;
   --color-bg-elevated: #ffffff;
+  --color-hero-end: #134e4a;
 
   /* Text */
   --color-text: #334155;
@@ -19,6 +22,15 @@
   --color-border: #e2e8f0;
   --color-border-strong: #cbd5e1;
   --color-focus-ring: rgba(13, 148, 136, 0.45);
+  --color-success: #059669;
+  --color-error: #dc2626;
+
+  /* Product grid & cards — marketplace-style compact sizing */
+  --product-grid-gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  --product-card-min: 160px;
+  --product-card-max: 220px;
+  --product-image-height: 180px;
+  --product-detail-image-max: 420px;
 
   /* Typography */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -30,7 +42,7 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
-  --font-size-4xl: 2.5rem;
+  --font-size-4xl: 2.75rem;
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
@@ -44,8 +56,11 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Layout */
-  --container-max: 1200px;
+  /* Layout — full-width with edge gutters */
+  --page-gutter: clamp(1.25rem, 5vw, 4rem);
+  --section-gap: clamp(2rem, 5vw, 3.5rem);
+  --container-max: 100%;
+  --content-max: 1600px;
   --header-height: 72px;
 
   /* Effects */
@@ -53,9 +68,9 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.14);
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
 }
