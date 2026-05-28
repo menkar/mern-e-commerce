@@ -1,20 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const loadCartItems = () => {
-    try {
-        const stored = localStorage.getItem('cartItems');
-        if (!stored) return [];
-        const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        return [];
-    }
-};
-
-const getItemId = (item) => item._id ?? item.productId;
 
 const initialState = {
-    cartItems: loadCartItems()
+    cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
 };
 
 const cartSlice = createSlice({
@@ -23,24 +11,18 @@ const cartSlice = createSlice({
     reducers: {
         addToCart: (state, action) => {
             const item = action.payload;
-            const cartItems = Array.isArray(state.cartItems) ? state.cartItems : [];
-            const existItem = cartItems.find(
-                (stateItem) => getItemId(stateItem) === getItemId(item)
-            );
+            const existItem = state.cartItems.find((x) => x.productId === item.productId );
             if (existItem) {
-                state.cartItems = cartItems.map((x) =>
-                    getItemId(x) === getItemId(item) ? item : x
+                state.cartItems = state.cartItems.map((x) =>
+                    x.productId === existItem.productId ? item : x
                 );
             } else {
-                state.cartItems = [...cartItems, item];
+                state.cartItems.push(item);
             }
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
         removeFromCart: (state, action) => {
-            const itemId = action.payload;
-            state.cartItems = (Array.isArray(state.cartItems) ? state.cartItems : []).filter(
-                (x) => getItemId(x) !== itemId
-            );
+            state.cartItems = state.cartItems.filter((x) => x.productId !== action.payload);
             localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
         },
         clearCart: (state) => {

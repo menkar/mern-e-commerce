@@ -8,6 +8,12 @@
 @import "./product-details.css";
 @import "./auth.css";
 @import "./pages.css";
+@import "./shop.css";
+@import "./cart.css";
+@import "./checkout.css";
+@import "./profile.css";
+@import "./order-success.css";
+@import "./admin.css";
 
 *,
 *::before,
@@ -135,6 +141,21 @@ ul {
 .btn:focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 3px;
+}
+
+.btn-secondary {
+  color: var(--color-text-inverse) !important;
+  background: var(--color-primary-light) !important;
+}
+
+.btn-secondary:hover {
+  color: var(--color-text-inverse) !important;
+  background: var(--color-primary) !important;
+}
+
+.btn-danger {
+  color: var(--color-text-inverse) !important;
+  background: var(--color-error) !important;
 }
 
 @media (max-width: 768px) {

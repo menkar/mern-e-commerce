@@ -3,14 +3,14 @@ import {useParams, Link} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 
-const ProductDetails = () => {
+const ProductDetail = () => {
     const {id} = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     
     useEffect(() => {
-        const fetchProductDetails = async () => {
+        const fetchProductDetail = async () => {
             try {
                 const res = await fetch(`/api/v1/products/${id}`);
                 const data = await res.json();
@@ -23,7 +23,7 @@ const ProductDetails = () => {
             }
         }
 
-        fetchProductDetails();
+        fetchProductDetail();
 
     }, [id]);
 
@@ -80,4 +80,4 @@ const ProductDetails = () => {
     </div>
   );
 };
-export default ProductDetails;
+export default ProductDetail;

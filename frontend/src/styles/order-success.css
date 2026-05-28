@@ -1,0 +1,51 @@
+/* Order success */
+.order-success-page {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl) var(--page-gutter);
+  background: var(--color-bg);
+}
+
+.order-success-card {
+  width: 100%;
+  max-width: 560px;
+  padding: var(--space-3xl) var(--space-2xl);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.order-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: var(--space-lg);
+  font-size: 2.5rem;
+  color: var(--color-success);
+  background: rgba(5, 150, 105, 0.12);
+  border-radius: 50%;
+}
+
+.order-success-card h2 {
+  margin: 0 0 var(--space-md);
+  font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
+  color: var(--color-success);
+}
+
+.order-success-card p {
+  margin: 0 0 var(--space-2xl);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+}
+
+.order-success-card .btn {
+  min-width: 200px;
+}

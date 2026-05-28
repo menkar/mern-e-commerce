@@ -60,7 +60,7 @@
   --page-gutter: clamp(1.25rem, 5vw, 4rem);
   --section-gap: clamp(2rem, 5vw, 3.5rem);
   --container-max: 100%;
-  --content-max: 1600px;
+  --content-max: 100%;
   --header-height: 72px;
 
   /* Effects */
