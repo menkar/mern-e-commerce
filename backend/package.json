@@ -9,6 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:frontend": "cd ../frontend && npm install && npm run build",
+    "render-build": "npm install && npm run build:frontend",
     "seed": "node seed.js",
     "seed:products": "node seed.js",
     "seed:full": "node seed.js --full",

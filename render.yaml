@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: swap-ecommerce-store
+    runtime: node
+    plan: free
+    buildCommand: npm run render-build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
