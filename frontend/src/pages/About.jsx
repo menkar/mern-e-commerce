@@ -1,4 +1,5 @@
 import React from 'react';
+import founderPhoto from '../assets/SwapnilMenkar.png';
 
 const About = () => {
     return (
@@ -66,7 +67,7 @@ const About = () => {
                 <div className="founder-profile">
                     <div className="founder-photo-wrap">
                         <img
-                            src="/SwapnilMenkar.png"
+                            src={founderPhoto}
                             alt="Swapnil Namdeo Menkar"
                             className="founder-photo"
                         />

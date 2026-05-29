@@ -46,6 +46,10 @@ if (isProduction && hasFrontendBuild) {
             return next();
         }
 
+        if (path.extname(req.path)) {
+            return res.status(404).send('Not found');
+        }
+
         res.sendFile(path.join(frontendBuildPath, 'index.html'), (error) => {
             if (error) {
                 next(error);
