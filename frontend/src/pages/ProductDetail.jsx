@@ -5,6 +5,7 @@ import { addToCart } from '../redux/cartSlice';
 import { useNotification } from '../context/NotificationContext';
 import { validateCartQuantity, getStockLimitMessage } from '../utils/cartValidation';
 import { formatCurrency } from '../utils/orderHelpers';
+import { getStockAvailabilityLabel, isOutOfStock } from '../utils/stockHelpers';
 
 const ProductDetail = () => {
     const {id} = useParams();
@@ -35,8 +36,8 @@ const ProductDetail = () => {
     const handleAddToCart = () => {
         if (!product) return;
 
-        if (product.stock <= 0) {
-            notify.error('This item is out of stock.');
+        if (isOutOfStock(product.stock)) {
+            notify.error('This item is currently out of stock.');
             return;
         }
 
@@ -77,7 +78,8 @@ const ProductDetail = () => {
 
     const existItem = cartItems.find((x) => x.productId === product._id);
     const inCartQty = existItem?.qty ?? 0;
-    const isCartFull = product.stock > 0 && inCartQty >= product.stock;
+    const isCartFull = !isOutOfStock(product.stock) && inCartQty >= product.stock;
+    const outOfStock = isOutOfStock(product.stock);
 
     return (
         <div className="product-detail-wrapper">
@@ -105,9 +107,9 @@ const ProductDetail = () => {
               type="button"
               onClick={handleAddToCart}
               className="btn"
-              disabled={product.stock <= 0 || isCartFull}
+              disabled={outOfStock || isCartFull}
             >
-              {product.stock <= 0
+              {outOfStock
                 ? 'Out of Stock'
                 : isCartFull
                   ? 'Maximum Quantity in Cart'
@@ -115,8 +117,8 @@ const ProductDetail = () => {
             </button>
           </div>
           
-          <p className={`detail-stock ${product.stock > 0 ? 'detail-stock--in' : 'detail-stock--out'}`}>
-            {product.stock > 0 ? `● In Stock (${product.stock} units available)` : `● Temporarily Out of Stock`}
+          <p className={`detail-stock ${outOfStock ? 'detail-stock--out' : 'detail-stock--in'}`}>
+            {outOfStock ? '● Currently unavailable — out of stock' : `● ${getStockAvailabilityLabel(product.stock)}`}
           </p>
 
           {isCartFull && (

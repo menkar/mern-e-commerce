@@ -26,6 +26,9 @@ const Login = () => {
                 login(data);
                 notify.success('Welcome back! You are now logged in.');
                 navigate('/');
+            } else if (res.status === 403 && data.requiresVerification) {
+                notify.info(data.message || 'Please verify your email to continue.');
+                navigate('/verify-otp', { state: { email: data.email } });
             } else {
                 notify.error(data.message || 'Login failed. Please check your credentials.');
             }

@@ -854,6 +854,14 @@
   border-color: #fcd34d;
 }
 
+.admin-stock-pill--out {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+  min-width: auto;
+  padding: 0.2rem 0.6rem;
+}
+
 /* Forms */
 .admin-form-page {
   max-width: none;

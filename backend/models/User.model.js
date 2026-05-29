@@ -22,6 +22,14 @@ const userSchema = mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    otpHash: {
+        type: String,
+        select: false
+    },
+    otpExpiresAt: {
+        type: Date,
+        select: false
     }
 },
     {timestamps: true}

@@ -104,8 +104,14 @@ const AdminProducts = () => {
                       <td data-label="Price" className="admin-table__price">{formatCurrency(product.price)}</td>
                       <td data-label="Category">{product.category}</td>
                       <td data-label="Stock">
-                        <span className={`admin-stock-pill ${product.stock <= 5 ? 'admin-stock-pill--low' : ''}`}>
-                          {product.stock}
+                        <span className={`admin-stock-pill ${
+                          product.stock <= 0
+                            ? 'admin-stock-pill--out'
+                            : product.stock <= 5
+                              ? 'admin-stock-pill--low'
+                              : ''
+                        }`}>
+                          {product.stock <= 0 ? 'Out of stock' : product.stock}
                         </span>
                       </td>
                       <td data-label="Actions">

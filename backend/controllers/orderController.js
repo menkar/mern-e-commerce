@@ -1,46 +1,89 @@
 const Order = require("../models/Order.model");
+const Product = require("../models/Product.model");
 const { sendEmail } = require("../utils/sendEmail");
+const { buildOrderConfirmationEmail } = require("../utils/orderEmailTemplate");
 
+const reserveOrderStock = async (items) => {
+    for (const item of items) {
+        const product = await Product.findById(item.productId).select('name stock');
+
+        if (!product) {
+            return {
+                ok: false,
+                message: 'One or more products in your order are no longer available.',
+            };
+        }
+
+        if (product.stock < item.qty) {
+            const unitLabel = product.stock === 1 ? 'unit' : 'units';
+            const availableText = product.stock <= 0
+                ? 'is currently out of stock'
+                : `has only ${product.stock} ${unitLabel} left`;
+
+            return {
+                ok: false,
+                message: `${product.name} ${availableText}. Please update your cart.`,
+            };
+        }
+    }
+
+    for (const item of items) {
+        const updated = await Product.findOneAndUpdate(
+            { _id: item.productId, stock: { $gte: item.qty } },
+            { $inc: { stock: -item.qty } },
+            { new: true }
+        );
+
+        if (!updated) {
+            const product = await Product.findById(item.productId).select('name stock');
+            const availableText = !product || product.stock <= 0
+                ? 'is currently out of stock'
+                : `has only ${product.stock} units left`;
+
+            return {
+                ok: false,
+                message: `${product?.name || 'A product'} ${availableText}. Please update your cart.`,
+            };
+        }
+    }
+
+    return { ok: true };
+};
 
 const createOrder = async (req, res) => {
     try {
         const {items, totalAmount, address, paymentId } = req.body;
         if (!items || items.length === 0 || !totalAmount || !address ) {
             return res.status(400).json({message: "Invalid order data"});
-        } else {
-            const order = new Order({
-                user: req.user._id,
-                items,
-                totalAmount,
-                address,
-                paymentId
-            });
-            await order.save();
-
-            const orderItemsText = order.items.map((item, index) =>
-                `${index + 1}. Product ID: ${item.productId} | Qty: ${item.qty} | Price: ₹${item.price.toFixed(2)}`
-            ).join("\n");
-
-            const shippingAddressText = `${order.address.fullName}\n${order.address.street}\n${order.address.city}, ${order.address.postalCode}\n${order.address.country}`;
-
-            const message = `Dear ${req.user.name},\n\n` +
-                `Thank you for your order. We have received your purchase and your order is now being processed. Below are the details of your order:\n\n` +
-                `Order Summary:\n` +
-                `Order ID: ${order._id}\n` +
-                `Payment ID: ${order.paymentId || 'N/A'}\n` +
-                `Total Amount: ₹${order.totalAmount.toFixed(2)}\n\n` +
-                `Items:\n${orderItemsText}\n\n` +
-                `Shipping Address:\n${shippingAddressText}\n\n` +
-                `If you have any questions about your order, please reply to this email or contact our support team.\n\n` +
-                `Thank you for choosing us.\n\n` +
-                `Best regards,\n` +
-                `Customer Service Team` +
-                `Swap Ecommerce Store` ;
-
-            await sendEmail(req.user.email, `Order Confirmation - ${order._id}`, message);
-            return res.status(201).json({ message: 'Order created successfully', order });
         }
 
+        const stockResult = await reserveOrderStock(items);
+        if (!stockResult.ok) {
+            return res.status(400).json({ message: stockResult.message });
+        }
+
+        const order = new Order({
+            user: req.user._id,
+            items,
+            totalAmount,
+            address,
+            paymentId
+        });
+        await order.save();
+
+        const populatedOrder = await Order.findById(order._id).populate('items.productId', 'name');
+        const emailContent = buildOrderConfirmationEmail({
+            user: req.user,
+            order: populatedOrder,
+        });
+
+        await sendEmail(
+            req.user.email,
+            emailContent.subject,
+            emailContent.text,
+            emailContent.html
+        );
+        return res.status(201).json({ message: 'Order created successfully', order });
     } catch(error) {
         //console.error(error);
         res.status(500).json({message: 'Error creating order'});
