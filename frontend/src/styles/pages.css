@@ -376,6 +376,42 @@
   }
 }
 
+.catalog-empty {
+  width: 100%;
+  margin: 0 var(--page-gutter) var(--section-gap);
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.catalog-empty__title {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.catalog-empty p {
+  margin: 0;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+}
+
+.catalog-empty .btn {
+  margin-top: var(--space-lg);
+}
+
+.home-container .catalog-empty,
+.shop-container .catalog-empty {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (min-width: 1100px) {
   .skills-grid {
     grid-template-columns: repeat(3, 1fr);

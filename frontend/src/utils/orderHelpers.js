@@ -73,3 +73,37 @@ export const getAccountRoleClass = (role) =>
   role === 'admin' ? 'role-badge role-badge--admin' : 'role-badge role-badge--user';
 
 export const formatAccountRole = (role) => (role || 'user').toUpperCase();
+
+export const formatInvoiceNumber = (orderIndex) =>
+  `INV-${String(orderIndex + 1).padStart(4, '0')}`;
+
+export const getTransactionDetails = (order) => {
+  const paymentId = order?.paymentId;
+
+  if (!paymentId) {
+    return {
+      status: 'Pending',
+      method: 'Not paid',
+      reference: '—',
+    };
+  }
+
+  if (paymentId.startsWith('bypass_txn_')) {
+    return {
+      status: 'Completed',
+      method: 'Test order',
+      reference: paymentId,
+    };
+  }
+
+  return {
+    status: 'Completed',
+    method: 'Razorpay',
+    reference: paymentId,
+  };
+};
+
+export const getOrderItemCount = (order) =>
+  Array.isArray(order?.items)
+    ? order.items.reduce((sum, item) => sum + (item.qty || 0), 0)
+    : 0;

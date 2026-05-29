@@ -12,6 +12,9 @@ import {
   formatDeliveryAddress,
   getAccountRoleClass,
   formatAccountRole,
+  formatInvoiceNumber,
+  getTransactionDetails,
+  getOrderItemCount,
 } from '../utils/orderHelpers';
 
 const Profile = () => {
@@ -87,7 +90,11 @@ const Profile = () => {
         </div>
       ) : (
         <div className="orders-list">
-          {orders.map((order, orderIndex) => (
+          {orders.map((order, orderIndex) => {
+            const transaction = getTransactionDetails(order);
+            const itemCount = getOrderItemCount(order);
+
+            return (
             <article key={order._id} className="order-card">
               <div className="order-card__header">
                 <div>
@@ -99,6 +106,68 @@ const Profile = () => {
                 <span className={getOrderStatusClass(order.status)}>
                   {formatOrderStatus(order.status)}
                 </span>
+              </div>
+
+              <div className="order-card__details-grid">
+                <section className="order-card__panel" aria-label="Invoice details">
+                  <h5 className="order-card__panel-title">Invoice Details</h5>
+                  <dl className="order-card__detail-list">
+                    <div className="order-card__detail-row">
+                      <dt>Invoice No.</dt>
+                      <dd>{formatInvoiceNumber(orderIndex)}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Invoice Date</dt>
+                      <dd>{formatOrderDate(order)}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Billed To</dt>
+                      <dd>{user.name}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Email</dt>
+                      <dd>{user.email}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Items</dt>
+                      <dd>{itemCount}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Invoice Total</dt>
+                      <dd className="order-card__detail-amount">{formatCurrency(order.totalAmount)}</dd>
+                    </div>
+                  </dl>
+                </section>
+
+                <section className="order-card__panel" aria-label="Transaction details">
+                  <h5 className="order-card__panel-title">Transaction Details</h5>
+                  <dl className="order-card__detail-list">
+                    <div className="order-card__detail-row">
+                      <dt>Payment Status</dt>
+                      <dd>
+                        <span className={`order-card__payment-badge order-card__payment-badge--${transaction.status.toLowerCase()}`}>
+                          {transaction.status}
+                        </span>
+                      </dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Payment Method</dt>
+                      <dd>{transaction.method}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Transaction ID</dt>
+                      <dd><code className="order-card__code">{transaction.reference}</code></dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Amount Paid</dt>
+                      <dd className="order-card__detail-amount">{formatCurrency(order.totalAmount)}</dd>
+                    </div>
+                    <div className="order-card__detail-row">
+                      <dt>Order Status</dt>
+                      <dd>{formatOrderStatus(order.status)}</dd>
+                    </div>
+                  </dl>
+                </section>
               </div>
 
               {Array.isArray(order.items) && order.items.length > 0 && (
@@ -124,14 +193,15 @@ const Profile = () => {
 
               <div className="order-card__footer">
                 <span className="order-card__items-count">
-                  {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? 's' : ''}
+                  {itemCount} item{itemCount !== 1 ? 's' : ''}
                 </span>
                 <span className="order-card__total">
                   Total: <strong className="order-total">{formatCurrency(order.totalAmount)}</strong>
                 </span>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

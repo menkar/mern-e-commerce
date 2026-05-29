@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {createdOrder, verifyPayment} = require('../controllers/paymentController');
+const {getPaymentConfig, createdOrder, verifyPayment} = require('../controllers/paymentController');
 
+router.get('/config', getPaymentConfig);
 router.post('/order', createdOrder);
 router.post('/verify', verifyPayment);
 

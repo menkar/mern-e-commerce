@@ -90,7 +90,7 @@ const AddProduct = () => {
 
         notify.success('Product created successfully!');
 
-        navigate('/shop');
+        navigate('/admin/products');
 
       } else {
 

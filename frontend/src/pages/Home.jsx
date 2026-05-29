@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 
 const Home = () => {
@@ -8,21 +9,17 @@ const Home = () => {
     useEffect(() => {
         const fetchProducts = async() => {
             try {
-                //setLoading(true);
                 const res = await fetch("/api/v1/products");
                 const data = await res.json();
-                // setProducts(data.slice(0,4));
-                setProducts(data);
+                setProducts(Array.isArray(data) ? data : []);
             } catch (error) {
-
+                setProducts([]);
             } finally {
                 setLoading(false);
             }
         }
 
         fetchProducts();
-
-
     }, []);
 
     return (
@@ -33,17 +30,20 @@ const Home = () => {
             </div>
             <h2>Featured Products</h2>
             {loading ? (
-                <div className="loading-message">Loading...</div>
+                <div className="loading-message">Loading products</div>
+            ) : products.length === 0 ? (
+                <div className="catalog-empty">
+                    <p className="catalog-empty__title">No products available right now</p>
+                    <p>We are updating our catalog. Please check back soon or visit the shop page.</p>
+                    <Link to="/shop" className="btn">Browse Shop</Link>
+                </div>
             ) : (
                 <div className='product-grid'>
-                    {
-                        products.map(product => (
-                            <ProductCard key={product.id} product={product} />
-                        ))
-                    }
+                    {products.map(product => (
+                        <ProductCard key={product._id || product.id} product={product} />
+                    ))}
                 </div>
-            )
-            }
+            )}
         </div>
     )
 };

@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
+import { isAdmin } from './utils/authHelpers';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -21,10 +24,14 @@ import EditProduct from './admin/EditProduct';
 import AdminOrders from './admin/AdminOrders';
 import AdminUsers from './admin/AdminUsers';
 
-function App() {
+function AppShell() {
+  const location = useLocation();
+  const { user } = useContext(AuthContext);
+  const hideCart = isAdmin(user) || location.pathname.startsWith('/admin');
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      <Navbar hideCart={hideCart} />
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -48,6 +55,14 @@ function App() {
         </Routes>
       </div>
       <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppShell />
     </Router>
   );
 }

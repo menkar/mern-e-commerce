@@ -32,6 +32,10 @@ const productSchema = mongoose.Schema({
     numReviews: {
         type: Number,
         default: 0
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 },
     {timestamps: true}

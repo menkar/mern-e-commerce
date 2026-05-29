@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useSelector } from 'react-redux';
+import { isAdmin } from '../utils/authHelpers';
 
-const Navbar = () => {
+const Navbar = ({ hideCart = false }) => {
     const { user, logout} = useContext(AuthContext);
     const cartItems = useSelector((state) => state.cart.cartItems);
     const navigate = useNavigate();
+    const adminUser = isAdmin(user);
 
     const handleLogout = () => {
         logout();
@@ -22,11 +24,13 @@ const Navbar = () => {
             </div>
             <ul className="navbar-links">
                 <li><Link to="/shop">Shop</Link></li>
-                <li><Link to="/cart">Cart {cartItems.length !== 0 && ( "(" + cartItems.length + ")" )}</Link></li>
+                {!hideCart && (
+                    <li><Link to="/cart">Cart {cartItems.length !== 0 && ( "(" + cartItems.length + ")" )}</Link></li>
+                )}                
             { user ? (
                 <>
                     <li><Link to="/profile">Hi, {user.name}</Link></li>
-                    {user.role === 'admin' && <li><Link to="/admin">Admin</Link></li>}
+                    {adminUser && <li><Link to="/admin">Admin</Link></li>}
                     <li><button onClick={handleLogout} className='btn-logout'>Logout</button></li>
                 </>
 

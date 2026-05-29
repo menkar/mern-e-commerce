@@ -41,7 +41,8 @@ const createProduct = async (req, res) => {
             price,
             category,
             stock,
-            imageUrl
+            imageUrl,
+            user: req.user._id
         });
         const savedProduct = await product.save();
         

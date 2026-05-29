@@ -1,17 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import {removeFromCart, addToCart, reconcileCartStock} from '../redux/cartSlice';
 import { useNotification } from '../context/NotificationContext';
 import { validateCartQuantity, getStockLimitMessage } from '../utils/cartValidation';
 import { formatCurrency } from '../utils/orderHelpers';
+import { isAdmin } from '../utils/authHelpers';
 
 
 const Cart = () => {
+    const { user } = useContext(AuthContext);
     const cartItems = useSelector((state) => state.cart.cartItems);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { notify } = useNotification();
+
+    useEffect(() => {
+        if (isAdmin(user)) {
+            navigate('/admin', { replace: true });
+        }
+    }, [user, navigate]);
 
     useEffect(() => {
         if (cartItems.length === 0) return;
@@ -100,6 +109,9 @@ const Cart = () => {
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.qty, 0);
     const totalItems = cartItems.reduce((total, item) => total + item.qty, 0);
 
+    if (isAdmin(user)) {
+        return null;
+    }
 
     return (
         <div className="cart-page">

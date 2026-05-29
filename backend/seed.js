@@ -9,7 +9,48 @@ const Order = require('./models/Order.model');
 dotenv.config();
 
 // -----------------------------------------------------------------------------
-// Section 1: Seed users
+// Section 1: Seed admin (default product seed)
+// -----------------------------------------------------------------------------
+const seedAdminUser = {
+  name: 'Swapnil Menkar',
+  email: 'admin@swap.com',
+  plainPassword: 'Admin@123',
+  role: 'admin',
+  verified: true,
+};
+
+const ensureSeedAdmin = async () => {
+  let admin = await User.findOne({ email: seedAdminUser.email });
+
+  if (!admin) {
+    admin = await User.create({
+      name: seedAdminUser.name,
+      email: seedAdminUser.email,
+      password: bcrypt.hashSync(seedAdminUser.plainPassword, 10),
+      role: seedAdminUser.role,
+      verified: seedAdminUser.verified,
+    });
+    return { admin, created: true };
+  }
+
+  let updated = false;
+  if (admin.role !== 'admin') {
+    admin.role = 'admin';
+    updated = true;
+  }
+  if (!admin.verified) {
+    admin.verified = true;
+    updated = true;
+  }
+  if (updated) {
+    await admin.save();
+  }
+
+  return { admin, created: false };
+};
+
+// -----------------------------------------------------------------------------
+// Section 2: Seed users (full seed only)
 // -----------------------------------------------------------------------------
 const userCredentials = [
   {
@@ -58,7 +99,7 @@ const users = userCredentials.map((user) => ({
 }));
 
 // -----------------------------------------------------------------------------
-// Section 2: Seed products
+// Section 3: Seed products
 // -----------------------------------------------------------------------------
 const products = [
   {
@@ -427,8 +468,11 @@ const products = [
   },
 ];
 
+const buildProductsForAdmin = (adminId) =>
+  products.map((product) => ({ ...product, user: adminId }));
+
 // -----------------------------------------------------------------------------
-// Section 3: Seed orders
+// Section 4: Seed orders
 // -----------------------------------------------------------------------------
 const createOrders = (userDocs, productDocs) => {
   const [adminUser, verifiedUser, guestUser, anjaliUser, sagarUser] = userDocs;
@@ -524,52 +568,75 @@ const createOrders = (userDocs, productDocs) => {
 };
 
 // -----------------------------------------------------------------------------
-// Section 4: Main seed workflow
+// Section 5: Seed workflows
 // -----------------------------------------------------------------------------
-const importData = async () => {
-  try {
-    await Order.deleteMany();
-    await Product.deleteMany();
-    await User.deleteMany();
+const importProducts = async () => {
+  const { admin, created } = await ensureSeedAdmin();
 
-    const createdUsers = await User.insertMany(users);
-    const createdProducts = await Product.insertMany(products);
-    const createdOrders = await Order.insertMany(createOrders(createdUsers, createdProducts));
+  await Product.deleteMany();
+  const createdProducts = await Product.insertMany(buildProductsForAdmin(admin._id));
 
-    console.log('Seed data created successfully:');
-    console.log(`- Users: ${createdUsers.length}`);
-    console.log(`- Products: ${createdProducts.length}`);
-    console.log(`- Orders: ${createdOrders.length}`);
-    process.exit(0);
-  } catch (error) {
-    console.error('Seed import failed:', error);
-    process.exit(1);
+  console.log('Product seed completed successfully:');
+  console.log(`- Admin user: ${admin.email} (${created ? 'created' : 'existing'})`);
+  console.log(`- Products: ${createdProducts.length} (linked to admin)`);
+  if (created) {
+    console.log(`- Admin login: ${seedAdminUser.email} / ${seedAdminUser.plainPassword}`);
   }
 };
 
-const truncateData = async () => {
-  try {
-    await Order.deleteMany();
-    await Product.deleteMany();
-    await User.deleteMany();
-    console.log('All seed collections truncated successfully.');
-    process.exit(0);
-  } catch (error) {
-    console.error('Seed truncate failed:', error);
-    process.exit(1);
-  }
+const importFull = async () => {
+  await Order.deleteMany();
+  await Product.deleteMany();
+  await User.deleteMany();
+
+  const createdUsers = await User.insertMany(users);
+  const adminUser = createdUsers.find((userDoc) => userDoc.role === 'admin') || createdUsers[0];
+  const createdProducts = await Product.insertMany(buildProductsForAdmin(adminUser._id));
+  const createdOrders = await Order.insertMany(createOrders(createdUsers, createdProducts));
+
+  console.log('Full seed data created successfully:');
+  console.log(`- Users: ${createdUsers.length}`);
+  console.log(`- Products: ${createdProducts.length} (linked to ${adminUser.email})`);
+  console.log(`- Orders: ${createdOrders.length}`);
+};
+
+const truncateProducts = async () => {
+  await Product.deleteMany();
+  console.log('Products collection truncated successfully.');
+};
+
+const truncateAll = async () => {
+  await Order.deleteMany();
+  await Product.deleteMany();
+  await User.deleteMany();
+  console.log('All seed collections truncated successfully.');
 };
 
 // -----------------------------------------------------------------------------
-// Section 5: CLI entrypoint
+// Section 6: CLI entrypoint
 // -----------------------------------------------------------------------------
 const start = async () => {
+  const args = process.argv.slice(2);
+  const isTruncate = args.includes('--truncate');
+  const isFull = args.includes('--full');
+  const isTruncateAll = isTruncate && args.includes('--all');
+
   await connectDB();
 
-  if (process.argv[2] === '--truncate') {
-    await truncateData();
-  } else {
-    await importData();
+  try {
+    if (isTruncateAll) {
+      await truncateAll();
+    } else if (isTruncate) {
+      await truncateProducts();
+    } else if (isFull) {
+      await importFull();
+    } else {
+      await importProducts();
+    }
+    process.exit(0);
+  } catch (error) {
+    console.error('Seed operation failed:', error);
+    process.exit(1);
   }
 };
 

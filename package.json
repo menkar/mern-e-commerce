@@ -21,8 +21,11 @@
     "dev:client": "cd frontend && npm start",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "cd frontend && npm install && npm run build",
-    "seed" : "npm --prefix backend run seed",
-    "seed:truncate" : "npm --prefix backend run seed:truncate",
+    "seed": "npm --prefix backend run seed",
+    "seed:products": "npm --prefix backend run seed:products",
+    "seed:full": "npm --prefix backend run seed:full",
+    "seed:truncate": "npm --prefix backend run seed:truncate",
+    "seed:truncate:all": "npm --prefix backend run seed:truncate:all",
     "start:backend": "npm --prefix backend run dev",
     "start:frontend": "npm --prefix frontend run dev"
   },

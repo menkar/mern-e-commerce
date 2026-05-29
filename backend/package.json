@@ -10,7 +10,10 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed": "node seed.js",
-    "seed:truncate": "node seed.js --truncate"
+    "seed:products": "node seed.js",
+    "seed:full": "node seed.js --full",
+    "seed:truncate": "node seed.js --truncate",
+    "seed:truncate:all": "node seed.js --truncate --all"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
