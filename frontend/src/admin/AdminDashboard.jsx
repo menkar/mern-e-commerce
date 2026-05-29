@@ -40,7 +40,7 @@ const AdminDashboard = () => {
       <div className="admin-page-inner">
         <header className="admin-hero">
           <div className="admin-hero__brand">
-            <img src="/SwapCartLogo.png" alt="Store logo" className="admin-hero__logo" />
+            <img src={`${process.env.PUBLIC_URL}/swapCartLogo.png`} alt="Store logo" className="admin-hero__logo" />
             <div className="admin-hero__text">
               <h2>Admin Dashboard</h2>
               <p>Welcome back, <strong>{user?.name}</strong></p>

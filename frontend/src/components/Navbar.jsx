@@ -19,7 +19,7 @@ const Navbar = ({ hideCart = false }) => {
         <nav className="navbar" >
             <div className='navbar-brand'>
                 <Link to="/">
-                <img src="/SwapCartLogo.png" alt='Swap Ecommerce Store' className='navbar-logo'/>
+                <img src={`${process.env.PUBLIC_URL}/swapCartLogo.png`} alt='Swap Ecommerce Store' className='navbar-logo'/>
                 Swap Ecommerce Store</Link>
             </div>
             <ul className="navbar-links">
