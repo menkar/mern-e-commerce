@@ -30,7 +30,7 @@ app.use("/api/v1/analytics", require('./routes/analyticRoutes'));
 if (process.env.FRONTEND_URL === 'production') {
     app.use(express.static(Path.join(__dirname, '../frontend/build')));
 
-    app.get('*', (req, res) => {
+    app.use('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
     });
 } else {
