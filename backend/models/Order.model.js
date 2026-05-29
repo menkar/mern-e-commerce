@@ -20,7 +20,7 @@
     paymentId: {type: String},
     status: {type: String, enum: ['pending', 'shipped', 'delivered'], default: 'pending'}
  },
-{  timeseries: true}
+{ timestamps: true }
 )
 
 module.exports = mongoose.model("Order", orderSchema);

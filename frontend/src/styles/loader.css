@@ -1,0 +1,98 @@
+/* Global API loader — professional overlay */
+
+.app-loader-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  pointer-events: all;
+}
+
+.app-loader-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: loader-fade-in 0.2s ease-out;
+}
+
+.app-loader-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 20rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem) clamp(1rem, 4vw, 1.5rem);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  animation: loader-card-in 0.25s ease-out;
+}
+
+@keyframes loader-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes loader-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.app-loader-spinner {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+}
+
+.app-loader-spinner__ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: loader-spin 0.75s linear infinite;
+}
+
+.app-loader-spinner__core {
+  position: absolute;
+  inset: 0.625rem;
+  background: var(--color-accent-soft);
+  border-radius: 50%;
+}
+
+@keyframes loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-loader-message {
+  margin: 0 !important;
+  font-size: clamp(var(--font-size-sm), 2.5vw, var(--font-size-base));
+  font-weight: 600;
+  color: var(--color-heading);
+  text-align: center;
+  line-height: var(--line-height-normal);
+}
+
+@media (max-width: 480px) {
+  .app-loader-layer {
+    padding: var(--space-md);
+  }
+
+  .app-loader-card {
+    max-width: none;
+  }
+}

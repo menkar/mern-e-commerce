@@ -8,7 +8,7 @@ const upload = multer({dest: 'uploads/'});
 const router = express.Router();
 
 router.route('/').post(protect, createOrder).get(protect, admin, getOrders);
-router.route("/getMyOrders").get(protect, getMyOrders);
+router.route("/myorders").get(protect, getMyOrders);
 router.route('/:id/status').put(protect, admin, updateOrderStatus);
 
 module.exports = router;

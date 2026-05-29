@@ -35,15 +35,10 @@
   color: var(--color-heading);
 }
 
-.profile-badge {
+.profile-badge,
+.profile-header .role-badge {
   display: inline-block;
   margin-top: var(--space-sm);
-  padding: 0.35rem 0.75rem;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--color-accent);
-  background: var(--color-accent-soft);
-  border-radius: var(--radius-sm);
 }
 
 .btn-logout-profile {
@@ -74,20 +69,134 @@
 .orders-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
 .order-card {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-lg);
+  flex-direction: column;
+  gap: var(--space-md);
   padding: var(--space-lg);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+}
+
+.order-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-card__title {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.order-card__meta {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.order-card__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-card__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.order-card__item-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 50%;
+}
+
+.order-card__item-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.order-card__item-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.order-card__item-qty {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.order-card__item-price {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.order-card__address {
+  margin: 0;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.order-card__address strong {
+  color: var(--color-heading);
+}
+
+.order-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.order-card__items-count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.order-card__total {
+  font-size: var(--font-size-base);
+  color: var(--color-heading);
 }
 
 .order-card p {
@@ -105,31 +214,15 @@
   font-weight: 700;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  border-radius: 999px;
-}
-
-.status-badge--delivered {
-  color: var(--color-success);
-  background: rgba(5, 150, 105, 0.12);
-}
-
-.status-badge--shipped {
-  color: #2563eb;
-  background: rgba(37, 99, 235, 0.12);
-}
-
-.status-badge--pending {
-  color: #d97706;
-  background: rgba(217, 119, 6, 0.12);
-}
-
 .profile-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 120px;
   color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
@@ -139,5 +232,14 @@
 
   .btn-logout-profile {
     width: 100%;
+  }
+
+  .order-card__item {
+    flex-wrap: wrap;
+  }
+
+  .order-card__item-price {
+    width: 100%;
+    padding-left: calc(1.75rem + var(--space-md));
   }
 }

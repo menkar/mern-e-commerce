@@ -8,7 +8,7 @@ const generateToken = (user) => {
 }
 
 const registerUser = async (req, res) => {
-    const {name, email, password, role} = req.body;
+    const {name, email, password, role = 'user'} = req.body;
     
     try {
         const existingUser = await User.findOne({email});
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const user = await User.create({name, email, password: hashedPassword, role});
+        const user = await User.create({name, email, password: hashedPassword, role: role ? role.toLowerCase() : 'user'});
         if (user) {
             const otp = Math.floor(100000 + Math.random() * 900000).toString();
 

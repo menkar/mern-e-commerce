@@ -143,6 +143,30 @@
   color: #dc2626;
 }
 
+.detail-stock-limit-hint {
+  margin: var(--space-sm) 0 0;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: var(--radius-md);
+  line-height: var(--line-height-normal);
+}
+
+.detail-actions .btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.detail-actions .btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* Loading / not found on product page */
 .product-detail-wrapper > p {
   text-align: center;

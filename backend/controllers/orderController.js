@@ -18,7 +18,7 @@ const createOrder = async (req, res) => {
             await order.save();
 
             const orderItemsText = order.items.map((item, index) =>
-                `${index + 1}. Product ID: ${item.productId} | Qty: ${item.qty} | Price: $${item.price.toFixed(2)}`
+                `${index + 1}. Product ID: ${item.productId} | Qty: ${item.qty} | Price: ₹${item.price.toFixed(2)}`
             ).join("\n");
 
             const shippingAddressText = `${order.address.fullName}\n${order.address.street}\n${order.address.city}, ${order.address.postalCode}\n${order.address.country}`;
@@ -28,7 +28,7 @@ const createOrder = async (req, res) => {
                 `Order Summary:\n` +
                 `Order ID: ${order._id}\n` +
                 `Payment ID: ${order.paymentId || 'N/A'}\n` +
-                `Total Amount: $${order.totalAmount.toFixed(2)}\n\n` +
+                `Total Amount: ₹${order.totalAmount.toFixed(2)}\n\n` +
                 `Items:\n${orderItemsText}\n\n` +
                 `Shipping Address:\n${shippingAddressText}\n\n` +
                 `If you have any questions about your order, please reply to this email or contact our support team.\n\n` +
@@ -50,7 +50,9 @@ const createOrder = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
     try {
-        const orders = await Order.find({user: req.user._id}).populate('items.productId', 'name price');
+        const orders = await Order.find({user: req.user._id})
+            .populate('items.productId', 'name price')
+            .sort({ createdAt: -1 });
         res.status(200).json({orders});
     } catch(error) {
         res.status(500).json({message: "Error fetching orders", error});
@@ -59,7 +61,9 @@ const getMyOrders = async (req, res) => {
 
 const getOrders = async (req, res) => {
     try {
-         const orders = await Order.find({}).populate('user', 'id name');
+         const orders = await Order.find({})
+            .populate('user', 'name email')
+            .sort({ createdAt: -1 });
         res.status(200).json({orders});
     } catch(error) {
         res.status(500).json({message: "Error fetching orders", error});
@@ -71,7 +75,9 @@ const updateOrderStatus = async (req, res) => {
         const {status} = req.body;
         const order = await Order.findById(req.params.id);
         if (order) {
-            order.status = status;
+            const normalized = (status || 'pending').toLowerCase();
+            const allowed = ['pending', 'shipped', 'delivered'];
+            order.status = allowed.includes(normalized) ? normalized : 'pending';
             await order.save();
             res.status(200).json({message: "Order status updated", order});
         } else {

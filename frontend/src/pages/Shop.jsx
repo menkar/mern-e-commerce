@@ -9,7 +9,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/api/products');
+        const res = await fetch('/api/v1/products');
         const data = await res.json();
         setProducts(data);
       } catch (error) {
